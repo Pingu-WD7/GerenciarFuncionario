@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Gerenciar Funcionários</title>
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+    </head>
+    <body>
+        <nav>
+            <strong>GESTÃO / EQUIPE</strong>
+            <a th:href="@{/}">Painel</a>
+            <a th:href="@{/funcionario}">Funcionários</a>
+            <a th:href="@{/tarefa}">Tarefas</a>
+        </nav>
+        <main>
+            <p class="ok" th:if="${sucesso}" th:text="${sucesso}">
+            </p>
+            <p class="erro" th:if="${erro}" th:text="${erro}">
+            </p>
+            <h1>Tarefas</h1>
+            <section>
+                <h2>Nova tarefa</h2>
+                <p th:if="${#lists.isEmpty(funcionarios)}">Cadastre um funcionário antes de criar tarefas.</p>
+                <form class="fields" method="post" th:action="@{/tarefa/salvar}">
+                    <label>Título<input name="titulo" required maxlength="255">
+                    </label>
+                    <label>Descrição<input name="descricao" required maxlength="255">
+                    </label>
+                    <label>Responsável<select name="funcionarioId" required>
+                        <option value="">Selecione</option>
+                        <option th:each="f : ${funcionarios}" th:value="${f.id()}" th:text="${f.nomeFuncionario()}">
+                        </option>
+                    </select>
+                </label>
+                <button th:disabled="${#lists.isEmpty(funcionarios)}">Criar tarefa</button>
+            </form>
+        </section>
+        <section>
+            <h2>Buscar e filtrar</h2>
+            <form class="fields" method="get" th:action="@{/tarefa}">
+                <input name="q" th:value="${q}" placeholder="Título ou descrição">
+                <select name="status">
+                    <option value="">Todos os status</option>
+                    <option th:each="s : ${statusList}" th:value="${s}" th:selected="${s == status}" th:text="${s}">
+                    </option>
+                </select>
+                <select name="funcionarioId">
+                    <option value="">Todos os funcionários</option>
+                    <option th:each="f : ${funcionarios}" th:value="${f.id()}" th:selected="${f.id() == funcionarioId}" th:text="${f.nomeFuncionario()}">
+                    </option>
+                </select>
+                <button>Buscar</button>
+                <a th:href="@{/tarefa}">Limpar</a>
+            </form>
+            <p th:text="${#lists.size(tarefas)} + ' resultado(s)'">
+            </p>
+            <div class="scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Título</th>
+                            <th>Descrição</th>
+                            <th>Responsável</th>
+                            <th>Criação</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="t : ${tarefas}">
+                            <td th:text="${t.id()}">
+                            </td>
+                            <td th:text="${t.titulo()}">
+                            </td>
+                            <td th:text="${t.descricao()}">
+                            </td>
+                            <td th:text="${t.nomeFuncionario()}">
+                            </td>
+                            <td th:text="${t.dataCriacao()}">
+                            </td>
+                            <td>
+                                <form class="inline" method="post" th:action="@{/tarefa/status/{id}(id=${t.id()})}">
+                                    <select name="status">
+                                        <option th:each="s : ${statusList}" th:value="${s}" th:selected="${s == t.status()}" th:text="${s}">
+                                        </option>
+                                    </select>
+                                    <button>Alterar</button>
+                                </form>
+                            </td>
+                            <td>
+                                <a th:href="@{/tarefa/editar/{id}(id=${t.id()})}">Editar</a>
+                                <form class="inline" method="post" th:action="@{/tarefa/deletar/{id}(id=${t.id()})}" onsubmit="return confirm('Excluir tarefa?')">
+                                    <button class="danger">Excluir</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(tarefas)}">
+                            <td colspan="7">Nenhuma tarefa encontrada.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Gerenciar Funcionários</title>
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+    </head>
+    <body>
+        <nav>
+            <strong>GESTÃO / EQUIPE</strong>
+            <a th:href="@{/}">Painel</a>
+            <a th:href="@{/funcionario}">Funcionários</a>
+            <a th:href="@{/tarefa}">Tarefas</a>
+        </nav>
+        <main>
+            <p class="ok" th:if="${sucesso}" th:text="${sucesso}">
+            </p>
+            <p class="erro" th:if="${erro}" th:text="${erro}">
+            </p>
+            <h1>Editar tarefa</h1>
+            <section>
+                <form class="fields" method="post" th:action="@{/tarefa/atualizar/{id}(id=${tarefa.id()})}">
+                    <label>Título<input name="titulo" th:value="${tarefa.titulo()}" required maxlength="255">
+                    </label>
+                    <label>Descrição<input name="descricao" th:value="${tarefa.descricao()}" required maxlength="255">
+                    </label>
+                    <label>Responsável<select name="funcionarioId" required>
+                        <option th:each="f : ${funcionarios}" th:value="${f.id()}" th:selected="${f.id() == tarefa.funcionarioId()}" th:text="${f.nomeFuncionario()}">
+                        </option>
+                    </select>
+                </label>
+                <button>Salvar alterações</button>
+                <a th:href="@{/tarefa}">Cancelar</a>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

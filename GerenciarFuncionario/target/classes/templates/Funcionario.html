@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Gerenciar Funcionários</title>
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+    </head>
+    <body>
+        <nav>
+            <strong>GESTÃO / EQUIPE</strong>
+            <a th:href="@{/}">Painel</a>
+            <a th:href="@{/funcionario}">Funcionários</a>
+            <a th:href="@{/tarefa}">Tarefas</a>
+        </nav>
+        <main>
+            <p class="ok" th:if="${sucesso}" th:text="${sucesso}">
+            </p>
+            <p class="erro" th:if="${erro}" th:text="${erro}">
+            </p>
+            <h1>Funcionários</h1>
+            <section>
+                <h2>Novo funcionário</h2>
+                <form class="fields" th:action="@{/funcionario/salvar}" method="post">
+                    <label>Nome<input name="nomeFuncionario" required maxlength="255">
+                    </label>
+                    <label>Cargo<input name="cargoFuncionario" required maxlength="255">
+                    </label>
+                    <label>E-mail<input type="email" name="emailFuncionairo" required maxlength="255">
+                    </label>
+                    <button>Cadastrar</button>
+                </form>
+            </section>
+            <section>
+                <h2>Pesquisar funcionários</h2>
+                <form class="fields" method="get" th:action="@{/funcionario}">
+                    <input name="q" th:value="${q}" placeholder="Nome, cargo ou e-mail">
+                    <button>Buscar</button>
+                    <a th:href="@{/funcionario}">Limpar</a>
+                </form>
+                <p th:text="${#lists.size(funcionarios)} + ' resultado(s)'">
+                </p>
+                <div class="scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Cargo</th>
+                                <th>E-mail</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="f : ${funcionarios}">
+                                <td th:text="${f.id()}">
+                                </td>
+                                <td th:text="${f.nomeFuncionario()}">
+                                </td>
+                                <td th:text="${f.cargoFuncionario()}">
+                                </td>
+                                <td th:text="${f.emailFuncionairo()}">
+                                </td>
+                                <td>
+                                    <a th:href="@{/funcionario/editar/{id}(id=${f.id()})}">Editar</a> · <a th:href="@{/tarefa(funcionarioId=${f.id()})}">Tarefas</a>
+                                    <form class="inline" method="post" th:action="@{/funcionario/deletar/{id}(id=${f.id()})}" onsubmit="return confirm('Excluir funcionário?')">
+                                        <button class="danger">Excluir</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(funcionarios)}">
+                                <td colspan="5">Nenhum funcionário encontrado.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </body>
+</html>

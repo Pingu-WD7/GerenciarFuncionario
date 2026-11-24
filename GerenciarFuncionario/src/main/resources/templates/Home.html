@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Gerenciar Funcionários</title>
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+    </head>
+    <body>
+        <nav>
+            <strong>GESTÃO / EQUIPE</strong>
+            <a th:href="@{/}">Painel</a>
+            <a th:href="@{/funcionario}">Funcionários</a>
+            <a th:href="@{/tarefa}">Tarefas</a>
+        </nav>
+        <main>
+            <p class="ok" th:if="${sucesso}" th:text="${sucesso}">
+            </p>
+            <p class="erro" th:if="${erro}" th:text="${erro}">
+            </p>
+            <h1>Painel de gestão</h1>
+            <p>Visão geral dos funcionários e tarefas.</p>
+            <div class="cards">
+                <section>
+                    <h2>Funcionários</h2>
+                    <strong class="number" th:text="${totalFuncionarios}">0</strong>
+                </section>
+                <section>
+                    <h2>Tarefas</h2>
+                    <strong class="number" th:text="${totalTarefas}">0</strong>
+                </section>
+                <section>
+                    <h2>Pendentes</h2>
+                    <strong class="number" th:text="${pendentes}">0</strong>
+                </section>
+                <section>
+                    <h2>Em andamento</h2>
+                    <strong class="number" th:text="${andamento}">0</strong>
+                </section>
+                <section>
+                    <h2>Concluídas</h2>
+                    <strong class="number" th:text="${concluidas}">0</strong>
+                </section>
+            </div>
+            <section>
+                <h2>Acesso rápido</h2>
+                <a class="button" th:href="@{/funcionario}">Gerenciar funcionários</a>
+                <a class="button" th:href="@{/tarefa}">Gerenciar tarefas</a>
+            </section>
+        </main>
+    </body>
+</html>

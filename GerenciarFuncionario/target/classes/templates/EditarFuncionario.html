@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Gerenciar Funcionários</title>
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+    </head>
+    <body>
+        <nav>
+            <strong>GESTÃO / EQUIPE</strong>
+            <a th:href="@{/}">Painel</a>
+            <a th:href="@{/funcionario}">Funcionários</a>
+            <a th:href="@{/tarefa}">Tarefas</a>
+        </nav>
+        <main>
+            <p class="ok" th:if="${sucesso}" th:text="${sucesso}">
+            </p>
+            <p class="erro" th:if="${erro}" th:text="${erro}">
+            </p>
+            <h1>Editar funcionário</h1>
+            <section>
+                <form class="fields" method="post" th:action="@{/funcionario/atualizar/{id}(id=${funcionario.id()})}">
+                    <label>Nome<input name="nomeFuncionario" th:value="${funcionario.nomeFuncionario()}" required maxlength="255">
+                    </label>
+                    <label>Cargo<input name="cargoFuncionario" th:value="${funcionario.cargoFuncionario()}" required maxlength="255">
+                    </label>
+                    <label>E-mail<input type="email" name="emailFuncionairo" th:value="${funcionario.emailFuncionairo()}" required maxlength="255">
+                    </label>
+                    <button>Salvar alterações</button>
+                    <a th:href="@{/funcionario}">Cancelar</a>
+                </form>
+            </section>
+        </main>
+    </body>
+</html>
